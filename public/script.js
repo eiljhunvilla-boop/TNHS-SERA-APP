@@ -3,25 +3,61 @@ let step = 0;
 let answers = {};
 let finalMessage = "";
 
+// Questions for all emergencies (Trauma, Medical, Fire)
 const questions = [
   { key: "reporter", question: "Enter Your Name", type: "input" },
   { key: "type", question: "Select Emergency Type", options: ["Trauma", "Medical", "Fire"] },
-  { key: "patients", question: "Number of Patients", type: "input", inputMode: "numeric" },
-  { key: "conscious", question: "Is Patient Conscious?", options: ["Yes", "No"] },
-  { key: "breathing", question: "Is Patient Breathing?", options: ["Yes", "No"] },
-  { key: "sex", question: "Sex of Patient", options: ["Male", "Female"] },
-  { key: "condition", question: "Select Condition", options: [
-      "Severe bleeding",
-      "Fracture",
-      "Burns",
-      "Unconscious",
-      "Difficulty breathing",
-      "None",
-      "Other"
-    ]
+
+  // --- Fire-specific questions ---
+  {
+    key: "fireType",
+    question: "Select Fire Type",
+    options: ["Residential", "Commercial", "Vehicle", "Wildfire", "Other"],
+    dependsOn: "type",
+    dependsValue: "FIRE"
   },
-  { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] },
-  { key: "location", question: "ENTER YOUR SPECIFIC LOCATION", type: "input" }
+  {
+    key: "location",
+    question: "ENTER YOUR SPECIFIC LOCATION",
+    type: "input",
+    dependsOn: "type",
+    dependsValue: "FIRE"
+  },
+  {
+    key: "patients",
+    question: "Are there Patients?",
+    options: ["Yes", "No"],
+    dependsOn: "type",
+    dependsValue: "FIRE"
+  },
+  {
+    key: "numPatients",
+    question: "Number of People at Risk",
+    options: ["Unknown"], // Unknown option
+    type: "input",
+    inputMode: "numeric",
+    dependsOn: "type",
+    dependsValue: "FIRE"
+  },
+  {
+    key: "trapped",
+    question: "Are People Trapped?",
+    options: ["Yes", "No"],
+    dependsOn: "type",
+    dependsValue: "FIRE"
+  },
+  {
+    key: "fireStatus",
+    question: "Fire Status",
+    options: ["Spreading", "Contained", "Out of Control"],
+    dependsOn: "type",
+    dependsValue: "FIRE"
+  },
+  {
+    key: "sceneSafe",
+    question: "Is Scene Safe?",
+    options: ["Yes", "No"]
+  }
 ];
 
 const backContainer = document.getElementById("backContainer");
@@ -39,6 +75,16 @@ function startApp(){
 }
 
 function loadQuestion(){
+  // Skip questions that depend on a type that doesn't match
+  while (questions[step] && questions[step].dependsOn && answers[questions[step].dependsOn] !== questions[step].dependsValue) {
+    step++;
+  }
+
+  if(step >= questions.length) {
+    generateSummary();
+    return;
+  }
+
   const q = questions[step];
   const container = document.getElementById("optionsContainer");
   container.innerHTML = "";
@@ -57,13 +103,27 @@ function loadQuestion(){
     backContainer.appendChild(backBtn);
   }
 
+  // INPUT TYPE QUESTION
   if(q.type === "input"){
     const input = document.createElement("input");
     input.id = "inputAnswer";
     input.required = true;
     if(q.inputMode) input.type = "number";
-    if(answers[q.key]) input.value = answers[q.key]; // prefill previous answer
+    if(answers[q.key]) input.value = answers[q.key]; // pre-fill previous answer
     container.appendChild(input);
+
+    // Include "Unknown" option for numeric fields if present
+    if(q.options && q.options.includes("Unknown")){
+      const unknownBtn = document.createElement("button");
+      unknownBtn.innerText = "Unknown";
+      unknownBtn.className = "option-btn";
+      unknownBtn.onclick = () => {
+        answers[q.key] = "UNKNOWN";
+        step++;
+        loadQuestion();
+      };
+      container.appendChild(unknownBtn);
+    }
 
     const confirmBtn = document.createElement("button");
     confirmBtn.innerText = "Confirm";
@@ -72,13 +132,12 @@ function loadQuestion(){
       if(!input.value.trim()) return alert("Required field.");
       answers[q.key] = input.value.trim().toUpperCase();
       step++;
-      if(step < questions.length) loadQuestion();
-      else generateSummary();
+      loadQuestion();
     };
     container.appendChild(confirmBtn);
     input.focus();
 
-  } else {
+  } else { // OPTIONS TYPE
     q.options.forEach(option => {
       const btn = document.createElement("button");
       btn.innerText = option;
@@ -99,8 +158,7 @@ function loadQuestion(){
             if(!input.value.trim()) return alert("Required field.");
             answers[q.key] = input.value.trim().toUpperCase();
             step++;
-            if(step < questions.length) loadQuestion();
-            else generateSummary();
+            loadQuestion();
           };
           container.appendChild(confirmBtn);
           input.focus();
@@ -109,8 +167,7 @@ function loadQuestion(){
 
         answers[q.key] = option.toUpperCase();
         step++;
-        if(step < questions.length) loadQuestion();
-        else generateSummary();
+        loadQuestion();
       };
 
       container.appendChild(btn);
@@ -120,30 +177,17 @@ function loadQuestion(){
 
 function generateSummary(){
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  finalMessage =
-`🚨 EMERGENCY REPORT 🚨
+  finalMessage = `🚨 FIRE REPORT 🚨
 
-Type: ${answers.type}
-
-Patients: ${answers.patients}
-
-Primary Patient:
-
-Conscious: ${answers.conscious}
-
-Breathing: ${answers.breathing}
-
-Sex: ${answers.sex}
-
-Condition: ${answers.condition}
-
-Scene Safe: ${answers.sceneSafe}
-
-Location: ${answers.location}
-
+Fire Type: ${answers.fireType || "-"}
+Location: ${answers.location || "-"}
+Patients: ${answers.patients || "-"}
+Number of People at Risk: ${answers.numPatients || "-"}
+Trapped: ${answers.trapped || "-"}
+Fire Status: ${answers.fireStatus || "-"}
+Scene Safe: ${answers.sceneSafe || "-"}
 Time: ${time}
-
-Reporter: ${answers.reporter}`;
+Reporter: ${answers.reporter || "-"}`;
 
   document.getElementById("summaryText").textContent = finalMessage.toUpperCase();
   showPage("summaryPage");
