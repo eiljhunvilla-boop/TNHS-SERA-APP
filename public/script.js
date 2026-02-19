@@ -1,115 +1,147 @@
 const pages = document.querySelectorAll(".page");
-let reporter = "";
+let step = 0;
+let answers = {};
 let finalMessage = "";
 
-function showPage(id) {
-  pages.forEach(p => p.classList.remove("active"));
+const questions = [
+  { key: "reporter", question: "Enter Your Name", type: "input" },
+
+  { key: "type", question: "Select Emergency Type", 
+    options: ["Trauma", "Medical", "Fire"] },
+
+  { key: "patients", question: "Number of Patients", type: "input" },
+
+  { key: "conscious", question: "Is Patient Conscious?", 
+    options: ["Yes", "No"] },
+
+  { key: "breathing", question: "Is Patient Breathing?", 
+    options: ["Yes", "No"] },
+
+  { key: "sex", question: "Sex of Patient", 
+    options: ["Male", "Female"] },
+
+  { key: "condition", question: "Select Condition", 
+    options: [
+      "Severe bleeding",
+      "Fracture",
+      "Burns",
+      "Unconscious",
+      "Difficulty breathing",
+      "None",
+      "Other"
+    ] },
+
+  { key: "sceneSafe", question: "Is Scene Safe?", 
+    options: ["Yes", "No"] },
+
+  { key: "location", question: "Enter Google Maps Link", type: "input" }
+];
+
+function showPage(id){
+  pages.forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-function startReport() {
-  const name = document.getElementById("reporterName").value.trim();
-  if (!name) return alert("Name required");
-  reporter = name;
-  showPage("reportPage");
+function startApp(){
+  showPage("questionPage");
+  loadQuestion();
 }
 
-const emergencyType = document.getElementById("emergencyType");
-const medicalSection = document.getElementById("medicalSection");
-const fireSection = document.getElementById("fireSection");
-const condition = document.getElementById("condition");
-const otherCondition = document.getElementById("otherCondition");
+function loadQuestion(){
+  const q = questions[step];
+  document.getElementById("questionTitle").innerText = q.question;
 
-emergencyType.addEventListener("change", () => {
-  medicalSection.classList.add("hidden");
-  fireSection.classList.add("hidden");
+  const container = document.getElementById("optionsContainer");
+  container.innerHTML = "";
 
-  if (emergencyType.value === "Fire") {
-    fireSection.classList.remove("hidden");
+  if(q.type === "input"){
+    const input = document.createElement("input");
+    input.id = "inputAnswer";
+    input.required = true;
+    container.appendChild(input);
   } else {
-    medicalSection.classList.remove("hidden");
-  }
-});
+    q.options.forEach(option=>{
+      const btn = document.createElement("button");
+      btn.innerText = option;
+      btn.className = "option-btn";
+      btn.onclick = ()=> {
+        answers[q.key] = option;
 
-condition.addEventListener("change", () => {
-  if (condition.value === "Other") {
-    otherCondition.classList.remove("hidden");
-    otherCondition.required = true;
+        if(option === "Other"){
+          container.innerHTML = "";
+          const input = document.createElement("input");
+          input.placeholder = "Specify condition";
+          input.onblur = ()=> answers[q.key] = input.value;
+          container.appendChild(input);
+        }
+      };
+      container.appendChild(btn);
+    });
+  }
+}
+
+function nextQuestion(){
+  const q = questions[step];
+
+  if(q.type === "input"){
+    const value = document.getElementById("inputAnswer").value.trim();
+    if(!value) return alert("Required field.");
+    answers[q.key] = value;
+  }
+
+  if(!answers[q.key]) return alert("Please select an option.");
+
+  step++;
+
+  if(step < questions.length){
+    loadQuestion();
   } else {
-    otherCondition.classList.add("hidden");
-    otherCondition.required = false;
+    generateSummary();
   }
-});
+}
 
-document.getElementById("reportForm").addEventListener("submit", function(e){
-  e.preventDefault();
-
+function generateSummary(){
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  const type = emergencyType.value;
 
-  if(type === "Fire"){
-    finalMessage =
-`🚨 FIRE REPORT 🚨
-
-Type: ${fireType.value}
-
-Location: ${fireLocation.value}
-
-Patients: ${firePatients.value}
-
-Trapped: ${trapped.value}
-
-Fire Status: ${fireStatus.value}
-
-Time: ${time}
-
-Reporter: ${reporter}`;
-  } else {
-
-    let injury = condition.value === "Other"
-      ? otherCondition.value
-      : condition.value;
-
-    finalMessage =
+  finalMessage =
 `🚨 EMERGENCY REPORT 🚨
 
-Type: ${type}
+Type: ${answers.type}
 
-Patients: ${patients.value}
+Patients: ${answers.patients}
 
 Primary Patient:
 
-Conscious: ${conscious.value}
+Conscious: ${answers.conscious}
 
-Breathing: ${breathing.value}
+Breathing: ${answers.breathing}
 
-Sex: ${sex.value}
+Sex: ${answers.sex}
 
-Condition: ${injury}
+Condition: ${answers.condition}
 
-Scene Safe: ${sceneSafe.value}
+Scene Safe: ${answers.sceneSafe}
 
-Location: ${location.value}
+Location: ${answers.location}
 
 Time: ${time}
 
-Reporter: ${reporter}`;
-  }
+Reporter: ${answers.reporter}`;
 
   document.getElementById("summaryText").textContent = finalMessage;
   showPage("summaryPage");
-});
+}
 
-function sendReport(){
+function confirmSend(){
   fetch("/api/send",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({message:finalMessage})
   })
   .then(res=>res.json())
-  .then(()=> {
+  .then(()=>{
     alert("Alert Sent Successfully!");
     location.reload();
   })
-  .catch(()=> alert("Failed to send"));
+  .catch(()=>alert("Failed to send."));
 }
