@@ -1,80 +1,28 @@
-body{
-  margin:0;
-  font-family:Arial;
-  background:white;
-  text-align:center;
-}
-
-.page{
-  display:none;
-  padding:30px;
-}
-
-.page.active{
-  display:block;
-}
-
-.title{
-  margin-top:80px;
-  font-size:40px;
-}
-
-.tnh{
-  color:black;
-  font-weight:bold;
-}
-
-.safe{
-  color:#007BFF;
-  font-weight:bold;
-}
-
+/* SOS Button Circular Design */
 .sos-btn{
   margin-top:100px;
-  font-size:40px;
-  padding:40px 80px;
+  width:200px;
+  height:200px;
+  font-size:50px;
+  border-radius:50%;
   background:red;
   color:white;
   border:none;
-  border-radius:20px;
+  cursor:pointer;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
 
-#optionsContainer{
-  margin-top:40px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:15px;
-}
-
+/* Question choices styling */
 .option-btn{
   width:80%;
   padding:15px;
   font-size:18px;
   border-radius:10px;
-  border:1px solid #ccc;
-  background:#f2f2f2;
-}
-
-input{
-  width:80%;
-  padding:15px;
-  font-size:18px;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
-
-button{
-  margin-top:30px;
-  padding:15px 30px;
-  font-size:18px;
-  background:#007BFF;
-  color:white;
   border:none;
-  border-radius:10px;
-}
-
-pre{
-  text-align:left;
-  white-space:pre-wrap;
+  background:#5DADE2; /* light blue background */
+  color:white; /* white text */
+  cursor:pointer;
+  text-align:center;
 }

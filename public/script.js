@@ -38,12 +38,14 @@ const questions = [
 ];
 
 function showPage(id){
-  pages.forEach(p=>p.classList.remove("active"));
+  pages.forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
 function startApp(){
   showPage("questionPage");
+  step = 0;
+  answers = {};
   loadQuestion();
 }
 
@@ -59,44 +61,53 @@ function loadQuestion(){
     input.id = "inputAnswer";
     input.required = true;
     container.appendChild(input);
+
+    // Automatically proceed on Enter key
+    input.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        if(!input.value.trim()) return alert("Required field.");
+        answers[q.key] = input.value.trim();
+        step++;
+        if(step < questions.length){
+          loadQuestion();
+        } else {
+          generateSummary();
+        }
+      }
+    });
+
   } else {
-    q.options.forEach(option=>{
+    q.options.forEach(option => {
       const btn = document.createElement("button");
       btn.innerText = option;
       btn.className = "option-btn";
-      btn.onclick = ()=> {
+
+      btn.onclick = () => {
         answers[q.key] = option;
 
         if(option === "Other"){
           container.innerHTML = "";
           const input = document.createElement("input");
           input.placeholder = "Specify condition";
-          input.onblur = ()=> answers[q.key] = input.value;
+          input.onblur = () => {
+            if(input.value.trim()) answers[q.key] = input.value.trim();
+          };
           container.appendChild(input);
+          input.focus();
+          return;
+        }
+
+        // Automatically go to next question
+        step++;
+        if(step < questions.length){
+          loadQuestion();
+        } else {
+          generateSummary();
         }
       };
+
       container.appendChild(btn);
     });
-  }
-}
-
-function nextQuestion(){
-  const q = questions[step];
-
-  if(q.type === "input"){
-    const value = document.getElementById("inputAnswer").value.trim();
-    if(!value) return alert("Required field.");
-    answers[q.key] = value;
-  }
-
-  if(!answers[q.key]) return alert("Please select an option.");
-
-  step++;
-
-  if(step < questions.length){
-    loadQuestion();
-  } else {
-    generateSummary();
   }
 }
 
@@ -133,15 +144,15 @@ Reporter: ${answers.reporter}`;
 }
 
 function confirmSend(){
-  fetch("/api/send",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({message:finalMessage})
+  fetch("/api/send", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: finalMessage})
   })
-  .then(res=>res.json())
-  .then(()=>{
+  .then(res => res.json())
+  .then(() => {
     alert("Alert Sent Successfully!");
     location.reload();
   })
-  .catch(()=>alert("Failed to send."));
+  .catch(() => alert("Failed to send."));
 }
