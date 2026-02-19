@@ -21,7 +21,7 @@ const questions = [
     ]
   },
   { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] },
-  { key: "location", question: "Enter Google Maps Link", type: "input" }
+  { key: "location", question: "Enter Your Specific Location", type: "input" }
 ];
 
 function showPage(id){
