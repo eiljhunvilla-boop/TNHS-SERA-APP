@@ -21,7 +21,7 @@ const questions = [
     ]
   },
   { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] },
-  { key: "location", question: "Enter Your Specific Location", type: "input" }
+  { key: "location", question: "ENTER YOUR SPECIFIC LOCATION", type: "input" } // <-- updated text
 ];
 
 function showPage(id){
@@ -54,7 +54,7 @@ function loadQuestion(){
     confirmBtn.className = "confirm-btn";
     confirmBtn.onclick = () => {
       if(!input.value.trim()) return alert("Required field.");
-      answers[q.key] = input.value.trim();
+      answers[q.key] = input.value.trim().toUpperCase(); // <-- convert to uppercase
       step++;
       if(step < questions.length) loadQuestion();
       else generateSummary();
@@ -80,7 +80,7 @@ function loadQuestion(){
           confirmBtn.className = "confirm-btn";
           confirmBtn.onclick = () => {
             if(!input.value.trim()) return alert("Required field.");
-            answers[q.key] = input.value.trim();
+            answers[q.key] = input.value.trim().toUpperCase(); // <-- convert to uppercase
             step++;
             if(step < questions.length) loadQuestion();
             else generateSummary();
@@ -90,7 +90,7 @@ function loadQuestion(){
           return;
         }
 
-        answers[q.key] = option;
+        answers[q.key] = option.toUpperCase(); // <-- convert selected option to uppercase
         step++;
         if(step < questions.length) loadQuestion();
         else generateSummary();
@@ -129,7 +129,7 @@ Time: ${time}
 
 Reporter: ${answers.reporter}`;
 
-  document.getElementById("summaryText").textContent = finalMessage;
+  document.getElementById("summaryText").textContent = finalMessage.toUpperCase();
   showPage("summaryPage");
 }
 
