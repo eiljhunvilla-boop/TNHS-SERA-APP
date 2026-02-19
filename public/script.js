@@ -6,7 +6,7 @@ let finalMessage = "";
 const questions = [
   { key: "reporter", question: "Enter Your Name", type: "input" },
   { key: "type", question: "Select Emergency Type", options: ["Trauma", "Medical", "Fire"] },
-  { key: "patients", question: "Number of Patients", type: "input" },
+  { key: "patients", question: "Number of Patients", type: "input", inputMode: "numeric" },
   { key: "conscious", question: "Is Patient Conscious?", options: ["Yes", "No"] },
   { key: "breathing", question: "Is Patient Breathing?", options: ["Yes", "No"] },
   { key: "sex", question: "Sex of Patient", options: ["Male", "Female"] },
@@ -38,30 +38,29 @@ function startApp(){
 
 function loadQuestion(){
   const q = questions[step];
-  document.getElementById("questionTitle").innerText = q.question;
-
   const container = document.getElementById("optionsContainer");
   container.innerHTML = "";
+  document.getElementById("questionTitle").innerText = q.question;
 
   if(q.type === "input"){
     const input = document.createElement("input");
     input.id = "inputAnswer";
     input.required = true;
+    if(q.inputMode) input.type = "number";
     container.appendChild(input);
 
-    // proceed on Enter key
-    input.addEventListener("keydown", function(e){
-      if(e.key === "Enter"){
-        if(!input.value.trim()) return alert("Required field.");
-        answers[q.key] = input.value.trim();
-        step++;
-        if(step < questions.length){
-          loadQuestion();
-        } else {
-          generateSummary();
-        }
-      }
-    });
+    const confirmBtn = document.createElement("button");
+    confirmBtn.innerText = "Confirm";
+    confirmBtn.className = "confirm-btn";
+    confirmBtn.onclick = () => {
+      if(!input.value.trim()) return alert("Required field.");
+      answers[q.key] = input.value.trim();
+      step++;
+      if(step < questions.length) loadQuestion();
+      else generateSummary();
+    };
+    container.appendChild(confirmBtn);
+    input.focus();
 
   } else {
     q.options.forEach(option => {
@@ -70,27 +69,31 @@ function loadQuestion(){
       btn.className = "option-btn";
 
       btn.onclick = () => {
-        answers[q.key] = option;
-
         if(option === "Other"){
           container.innerHTML = "";
           const input = document.createElement("input");
           input.placeholder = "Specify condition";
-          input.onblur = () => {
-            if(input.value.trim()) answers[q.key] = input.value.trim();
-          };
           container.appendChild(input);
+
+          const confirmBtn = document.createElement("button");
+          confirmBtn.innerText = "Confirm";
+          confirmBtn.className = "confirm-btn";
+          confirmBtn.onclick = () => {
+            if(!input.value.trim()) return alert("Required field.");
+            answers[q.key] = input.value.trim();
+            step++;
+            if(step < questions.length) loadQuestion();
+            else generateSummary();
+          };
+          container.appendChild(confirmBtn);
           input.focus();
           return;
         }
 
-        // auto next question
+        answers[q.key] = option;
         step++;
-        if(step < questions.length){
-          loadQuestion();
-        } else {
-          generateSummary();
-        }
+        if(step < questions.length) loadQuestion();
+        else generateSummary();
       };
 
       container.appendChild(btn);
