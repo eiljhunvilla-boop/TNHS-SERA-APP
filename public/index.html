@@ -1,4 +1,14 @@
-<!-- HOME -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TNHSafe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HOME PAGE -->
 <div class="page active" id="homePage">
   <h1 class="title">
     <span class="tnh">TNH</span><span class="safe">Safe</span>
@@ -6,15 +16,19 @@
   <button class="sos-btn" onclick="startApp()">⚠️ SOS</button>
 </div>
 
-<!-- QUESTION CONTAINER -->
+<!-- QUESTION PAGE -->
 <div class="page" id="questionPage">
   <h2 id="questionTitle"></h2>
   <div id="optionsContainer"></div>
 </div>
 
-<!-- SUMMARY -->
+<!-- SUMMARY PAGE -->
 <div class="page" id="summaryPage">
   <h2>Review Report</h2>
   <pre id="summaryText"></pre>
   <button onclick="confirmSend()">Confirm & Send</button>
 </div>
+
+<script src="script.js"></script>
+</body>
+</html>

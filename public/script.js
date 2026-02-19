@@ -5,23 +5,12 @@ let finalMessage = "";
 
 const questions = [
   { key: "reporter", question: "Enter Your Name", type: "input" },
-
-  { key: "type", question: "Select Emergency Type", 
-    options: ["Trauma", "Medical", "Fire"] },
-
+  { key: "type", question: "Select Emergency Type", options: ["Trauma", "Medical", "Fire"] },
   { key: "patients", question: "Number of Patients", type: "input" },
-
-  { key: "conscious", question: "Is Patient Conscious?", 
-    options: ["Yes", "No"] },
-
-  { key: "breathing", question: "Is Patient Breathing?", 
-    options: ["Yes", "No"] },
-
-  { key: "sex", question: "Sex of Patient", 
-    options: ["Male", "Female"] },
-
-  { key: "condition", question: "Select Condition", 
-    options: [
+  { key: "conscious", question: "Is Patient Conscious?", options: ["Yes", "No"] },
+  { key: "breathing", question: "Is Patient Breathing?", options: ["Yes", "No"] },
+  { key: "sex", question: "Sex of Patient", options: ["Male", "Female"] },
+  { key: "condition", question: "Select Condition", options: [
       "Severe bleeding",
       "Fracture",
       "Burns",
@@ -29,11 +18,9 @@ const questions = [
       "Difficulty breathing",
       "None",
       "Other"
-    ] },
-
-  { key: "sceneSafe", question: "Is Scene Safe?", 
-    options: ["Yes", "No"] },
-
+    ]
+  },
+  { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] },
   { key: "location", question: "Enter Google Maps Link", type: "input" }
 ];
 
@@ -62,7 +49,7 @@ function loadQuestion(){
     input.required = true;
     container.appendChild(input);
 
-    // Automatically proceed on Enter key
+    // proceed on Enter key
     input.addEventListener("keydown", function(e){
       if(e.key === "Enter"){
         if(!input.value.trim()) return alert("Required field.");
@@ -97,7 +84,7 @@ function loadQuestion(){
           return;
         }
 
-        // Automatically go to next question
+        // auto next question
         step++;
         if(step < questions.length){
           loadQuestion();

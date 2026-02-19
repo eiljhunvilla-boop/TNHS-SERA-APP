@@ -1,4 +1,37 @@
-/* SOS Button Circular Design */
+body{
+  margin:0;
+  font-family:Arial;
+  background:white;
+  text-align:center;
+}
+
+/* PAGE SETUP */
+.page{
+  display:none;
+  padding:30px;
+}
+
+.page.active{
+  display:block;
+}
+
+/* TITLE */
+.title{
+  margin-top:80px;
+  font-size:40px;
+}
+
+.tnh{
+  color:black;
+  font-weight:bold;
+}
+
+.safe{
+  color:#007BFF;
+  font-weight:bold;
+}
+
+/* BIG CIRCULAR SOS BUTTON */
 .sos-btn{
   margin-top:100px;
   width:200px;
@@ -14,15 +47,49 @@
   margin-right:auto;
 }
 
-/* Question choices styling */
+/* CHOICE BUTTONS */
+#optionsContainer{
+  margin-top:40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+}
+
 .option-btn{
   width:80%;
   padding:15px;
   font-size:18px;
   border-radius:10px;
   border:none;
-  background:#5DADE2; /* light blue background */
-  color:white; /* white text */
+  background:#5DADE2; /* light blue */
+  color:white;         /* white text */
   cursor:pointer;
   text-align:center;
+}
+
+/* INPUTS */
+input{
+  width:80%;
+  padding:15px;
+  font-size:18px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+/* CONFIRM BUTTON */
+button{
+  margin-top:30px;
+  padding:15px 30px;
+  font-size:18px;
+  background:#007BFF;
+  color:white;
+  border:none;
+  border-radius:10px;
+}
+
+/* SUMMARY PRE */
+pre{
+  text-align:left;
+  white-space:pre-wrap;
 }
