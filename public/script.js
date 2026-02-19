@@ -3,60 +3,34 @@ let step = 0;
 let answers = {};
 let finalMessage = "";
 
-// Questions for all emergencies (Trauma, Medical, Fire)
 const questions = [
   { key: "reporter", question: "Enter Your Name", type: "input" },
   { key: "type", question: "Select Emergency Type", options: ["Trauma", "Medical", "Fire"] },
 
-  // --- Fire-specific questions ---
-  {
-    key: "fireType",
-    question: "Select Fire Type",
-    options: ["Residential", "Commercial", "Vehicle", "Wildfire", "Other"],
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "location",
-    question: "ENTER YOUR SPECIFIC LOCATION",
-    type: "input",
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "patients",
-    question: "Are there Patients?",
-    options: ["Yes", "No"],
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "numPatients",
-    question: "Number of People at Risk",
-    options: ["Unknown"], // Unknown option
-    type: "input",
-    inputMode: "numeric",
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "trapped",
-    question: "Are People Trapped?",
-    options: ["Yes", "No"],
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "fireStatus",
-    question: "Fire Status",
-    options: ["Spreading", "Contained", "Out of Control"],
-    dependsOn: "type",
-    dependsValue: "FIRE"
-  },
-  {
-    key: "sceneSafe",
-    question: "Is Scene Safe?",
-    options: ["Yes", "No"]
+  // --- FIRE QUESTIONS ---
+  { key: "fireType", question: "Select Fire Type", options: ["Residential", "Commercial", "Vehicle", "Wildfire", "Other"], dependsOn: "type", dependsValue: "FIRE" },
+  { key: "location", question: "ENTER YOUR SPECIFIC LOCATION", type: "input", dependsOn: "type", dependsValue: "FIRE" },
+  { key: "patientsPresent", question: "Are there Patients?", options: ["Yes", "No"], dependsOn: "type", dependsValue: "FIRE" },
+  { key: "numPatients", question: "Number of People at Risk", options: ["Unknown"], type: "input", inputMode: "numeric", dependsOn: "patientsPresent", dependsValue: "YES" },
+  { key: "trapped", question: "Are People Trapped?", options: ["Yes", "No"], dependsOn: "patientsPresent", dependsValue: "YES" },
+  { key: "fireStatus", question: "Fire Status", options: ["Spreading", "Contained", "Out of Control"], dependsOn: "type", dependsValue: "FIRE" },
+  { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] }
+];
+
+// --- MEDICAL/TRAMA QUESTIONS added dynamically if patients are present ---
+const patientQuestions = [
+  { key: "conscious", question: "Is Patient Conscious?", options: ["Yes", "No"] },
+  { key: "breathing", question: "Is Patient Breathing?", options: ["Yes", "No"] },
+  { key: "sex", question: "Sex of Patient", options: ["Male", "Female"] },
+  { key: "condition", question: "Select Condition", options: [
+      "Severe bleeding",
+      "Fracture",
+      "Burns",
+      "Unconscious",
+      "Difficulty breathing",
+      "None",
+      "Other"
+    ]
   }
 ];
 
@@ -75,12 +49,19 @@ function startApp(){
 }
 
 function loadQuestion(){
-  // Skip questions that depend on a type that doesn't match
+  // Skip questions that have dependency not met
   while (questions[step] && questions[step].dependsOn && answers[questions[step].dependsOn] !== questions[step].dependsValue) {
     step++;
   }
 
-  if(step >= questions.length) {
+  // If finished main questions
+  if(step >= questions.length){
+    // If Fire and patients present, insert patientQuestions
+    if(answers.type === "FIRE" && answers.patientsPresent === "YES"){
+      questions.push(...patientQuestions);
+      loadQuestion();
+      return;
+    }
     generateSummary();
     return;
   }
@@ -103,16 +84,16 @@ function loadQuestion(){
     backContainer.appendChild(backBtn);
   }
 
-  // INPUT TYPE QUESTION
+  // INPUT TYPE
   if(q.type === "input"){
     const input = document.createElement("input");
     input.id = "inputAnswer";
     input.required = true;
     if(q.inputMode) input.type = "number";
-    if(answers[q.key]) input.value = answers[q.key]; // pre-fill previous answer
+    if(answers[q.key]) input.value = answers[q.key];
     container.appendChild(input);
 
-    // Include "Unknown" option for numeric fields if present
+    // Unknown option for numeric fields
     if(q.options && q.options.includes("Unknown")){
       const unknownBtn = document.createElement("button");
       unknownBtn.innerText = "Unknown";
@@ -148,7 +129,7 @@ function loadQuestion(){
           container.innerHTML = "";
           const input = document.createElement("input");
           input.placeholder = "Specify condition";
-          if(answers[q.key] && answers[q.key] !== "OTHER") input.value = answers[q.key]; // prefill
+          if(answers[q.key] && answers[q.key] !== "OTHER") input.value = answers[q.key];
           container.appendChild(input);
 
           const confirmBtn = document.createElement("button");
@@ -177,17 +158,40 @@ function loadQuestion(){
 
 function generateSummary(){
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  finalMessage = `🚨 FIRE REPORT 🚨
+
+  if(answers.type === "FIRE"){
+    finalMessage = `🚨 FIRE REPORT 🚨
 
 Fire Type: ${answers.fireType || "-"}
 Location: ${answers.location || "-"}
-Patients: ${answers.patients || "-"}
-Number of People at Risk: ${answers.numPatients || "-"}
+Patients Present: ${answers.patientsPresent || "-"}
+${answers.patientsPresent === "YES" ? 
+`Number of People at Risk: ${answers.numPatients || "-"}
+Primary Patient:
+Conscious: ${answers.conscious || "-"}
+Breathing: ${answers.breathing || "-"}
+Sex: ${answers.sex || "-"}
+Condition: ${answers.condition || "-"}` : ""}
 Trapped: ${answers.trapped || "-"}
 Fire Status: ${answers.fireStatus || "-"}
 Scene Safe: ${answers.sceneSafe || "-"}
 Time: ${time}
 Reporter: ${answers.reporter || "-"}`;
+  } else { // Trauma / Medical
+    finalMessage = `🚨 EMERGENCY REPORT 🚨
+
+Type: ${answers.type}
+Patients: ${answers.numPatients || "-"}
+Primary Patient:
+Conscious: ${answers.conscious || "-"}
+Breathing: ${answers.breathing || "-"}
+Sex: ${answers.sex || "-"}
+Condition: ${answers.condition || "-"}
+Scene Safe: ${answers.sceneSafe || "-"}
+Location: ${answers.location || "-"}
+Time: ${time}
+Reporter: ${answers.reporter || "-"}`;
+  }
 
   document.getElementById("summaryText").textContent = finalMessage.toUpperCase();
   showPage("summaryPage");
