@@ -1,0 +1,43 @@
+body{
+  margin:0;
+  font-family:Arial;
+  background:#111;
+  color:white;
+  text-align:center;
+}
+
+.page{ display:none; padding:20px; }
+.page.active{ display:block; }
+
+.sos-btn{
+  margin-top:40vh;
+  font-size:40px;
+  padding:40px 80px;
+  background:red;
+  border:none;
+  border-radius:20px;
+  color:white;
+}
+
+input,select{
+  width:90%;
+  padding:10px;
+  margin:10px;
+  border-radius:8px;
+  border:none;
+}
+
+button{
+  padding:15px 30px;
+  background:red;
+  color:white;
+  border:none;
+  border-radius:10px;
+}
+
+.hidden{ display:none; }
+
+pre{
+  text-align:left;
+  white-space:pre-wrap;
+}

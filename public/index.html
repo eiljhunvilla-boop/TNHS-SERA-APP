@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TNHSafe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SOS -->
+<div class="page active" id="sosPage">
+  <button class="sos-btn" onclick="showPage('namePage')">🚨 SOS</button>
+</div>
+
+<!-- NAME -->
+<div class="page" id="namePage">
+  <h2>Enter Your Name</h2>
+  <input type="text" id="reporterName" required>
+  <button onclick="startReport()">Continue</button>
+</div>
+
+<!-- REPORT -->
+<div class="page" id="reportPage">
+<form id="reportForm">
+
+<label>Emergency Type</label>
+<select id="emergencyType" required>
+  <option value="">Select</option>
+  <option value="Trauma">Trauma</option>
+  <option value="Medical">Medical</option>
+  <option value="Fire">Fire</option>
+</select>
+
+<div id="medicalSection" class="hidden">
+
+<label>Number of Patients</label>
+<input type="number" id="patients" required>
+
+<label>Conscious</label>
+<select id="conscious" required>
+  <option value="">Select</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<label>Breathing</label>
+<select id="breathing" required>
+  <option value="">Select</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<label>Sex</label>
+<select id="sex" required>
+  <option value="">Select</option>
+  <option>Male</option>
+  <option>Female</option>
+</select>
+
+<label>Condition</label>
+<select id="condition" required>
+  <option value="">Select</option>
+  <option>Severe bleeding</option>
+  <option>Fracture</option>
+  <option>Burns</option>
+  <option>Unconscious</option>
+  <option>Difficulty breathing</option>
+  <option>None</option>
+  <option value="Other">Other</option>
+</select>
+
+<input type="text" id="otherCondition" placeholder="Specify injury" class="hidden">
+
+<label>Scene Safe</label>
+<select id="sceneSafe" required>
+  <option value="">Select</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<label>Location (Google Maps Link)</label>
+<input type="text" id="location" required>
+
+</div>
+
+<div id="fireSection" class="hidden">
+
+<label>Fire Type</label>
+<input type="text" id="fireType" required>
+
+<label>Location (Google Maps Link)</label>
+<input type="text" id="fireLocation" required>
+
+<label>Patients (Yes (3) / No)</label>
+<input type="text" id="firePatients" required>
+
+<label>Trapped</label>
+<select id="trapped" required>
+  <option value="">Select</option>
+  <option>Yes</option>
+  <option>No</option>
+</select>
+
+<label>Fire Status</label>
+<input type="text" id="fireStatus" required>
+
+</div>
+
+<button type="submit">Next</button>
+</form>
+</div>
+
+<!-- SUMMARY -->
+<div class="page" id="summaryPage">
+<h2>Review Report</h2>
+<pre id="summaryText"></pre>
+<button onclick="sendReport()">Send Alert</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
