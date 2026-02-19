@@ -5,7 +5,6 @@ body{
   text-align:center;
 }
 
-/* PAGE SETUP */
 .page{
   display:none;
   padding:20px;
@@ -14,7 +13,6 @@ body{
   display:block;
 }
 
-/* TITLE */
 .title{
   margin-top:40px;
   font-size:36px;
@@ -22,7 +20,6 @@ body{
 .tnh{ color:black; font-weight:bold; }
 .safe{ color:#007BFF; font-weight:bold; }
 
-/* BIG CIRCULAR SOS BUTTON */
 .sos-btn{
   margin-top:60px;
   width:160px;
@@ -38,7 +35,6 @@ body{
   margin-right:auto;
 }
 
-/* BACK BUTTON */
 .back-btn{
   background:none;
   border:none;
@@ -51,7 +47,6 @@ body{
 }
 .back-btn span{ margin-left:5px; font-size:18px; }
 
-/* CHOICE BUTTONS */
 #optionsContainer{
   margin-top:30px;
   display:flex;
@@ -65,13 +60,12 @@ body{
   font-size:18px;
   border-radius:10px;
   border:none;
-  background:#5DADE2; /* light blue */
+  background:#5DADE2;
   color:white;
   cursor:pointer;
   text-align:center;
 }
 
-/* INPUTS */
 input{
   width:90%;
   padding:15px;
@@ -80,7 +74,6 @@ input{
   border:1px solid #ccc;
 }
 
-/* CONFIRM BUTTON */
 button.confirm-btn{
   margin-top:15px;
   padding:12px 25px;
@@ -91,7 +84,6 @@ button.confirm-btn{
   border-radius:10px;
 }
 
-/* SUMMARY BOX */
 #summaryBox{
   background:#5DADE2;
   color:white;
@@ -103,7 +95,6 @@ button.confirm-btn{
   font-size:14px;
 }
 
-/* CONFIRM MAIN BUTTON */
 button{
   margin-top:20px;
   padding:15px 30px;
@@ -114,7 +105,6 @@ button{
   border-radius:10px;
 }
 
-/* MOBILE RESPONSIVE */
 @media(max-width:480px){
   .sos-btn{ width:140px; height:140px; font-size:36px; }
   .title{ font-size:28px; }
