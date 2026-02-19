@@ -21,8 +21,10 @@ const questions = [
     ]
   },
   { key: "sceneSafe", question: "Is Scene Safe?", options: ["Yes", "No"] },
-  { key: "location", question: "ENTER YOUR SPECIFIC LOCATION", type: "input" } // <-- updated text
+  { key: "location", question: "ENTER YOUR SPECIFIC LOCATION", type: "input" }
 ];
+
+const backContainer = document.getElementById("backContainer");
 
 function showPage(id){
   pages.forEach(p => p.classList.remove("active"));
@@ -42,11 +44,25 @@ function loadQuestion(){
   container.innerHTML = "";
   document.getElementById("questionTitle").innerText = q.question;
 
+  // BACK BUTTON
+  backContainer.innerHTML = "";
+  if(step > 0){
+    const backBtn = document.createElement("button");
+    backBtn.className = "back-btn";
+    backBtn.innerHTML = "← <span>Back</span>";
+    backBtn.onclick = () => {
+      step--;
+      loadQuestion();
+    };
+    backContainer.appendChild(backBtn);
+  }
+
   if(q.type === "input"){
     const input = document.createElement("input");
     input.id = "inputAnswer";
     input.required = true;
     if(q.inputMode) input.type = "number";
+    if(answers[q.key]) input.value = answers[q.key]; // prefill previous answer
     container.appendChild(input);
 
     const confirmBtn = document.createElement("button");
@@ -54,7 +70,7 @@ function loadQuestion(){
     confirmBtn.className = "confirm-btn";
     confirmBtn.onclick = () => {
       if(!input.value.trim()) return alert("Required field.");
-      answers[q.key] = input.value.trim().toUpperCase(); // <-- convert to uppercase
+      answers[q.key] = input.value.trim().toUpperCase();
       step++;
       if(step < questions.length) loadQuestion();
       else generateSummary();
@@ -73,6 +89,7 @@ function loadQuestion(){
           container.innerHTML = "";
           const input = document.createElement("input");
           input.placeholder = "Specify condition";
+          if(answers[q.key] && answers[q.key] !== "OTHER") input.value = answers[q.key]; // prefill
           container.appendChild(input);
 
           const confirmBtn = document.createElement("button");
@@ -80,7 +97,7 @@ function loadQuestion(){
           confirmBtn.className = "confirm-btn";
           confirmBtn.onclick = () => {
             if(!input.value.trim()) return alert("Required field.");
-            answers[q.key] = input.value.trim().toUpperCase(); // <-- convert to uppercase
+            answers[q.key] = input.value.trim().toUpperCase();
             step++;
             if(step < questions.length) loadQuestion();
             else generateSummary();
@@ -90,7 +107,7 @@ function loadQuestion(){
           return;
         }
 
-        answers[q.key] = option.toUpperCase(); // <-- convert selected option to uppercase
+        answers[q.key] = option.toUpperCase();
         step++;
         if(step < questions.length) loadQuestion();
         else generateSummary();
@@ -103,7 +120,6 @@ function loadQuestion(){
 
 function generateSummary(){
   const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-
   finalMessage =
 `🚨 EMERGENCY REPORT 🚨
 

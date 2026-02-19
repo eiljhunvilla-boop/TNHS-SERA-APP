@@ -10,7 +10,6 @@ body{
   display:none;
   padding:20px;
 }
-
 .page.active{
   display:block;
 }
@@ -20,16 +19,8 @@ body{
   margin-top:40px;
   font-size:36px;
 }
-
-.tnh{
-  color:black;
-  font-weight:bold;
-}
-
-.safe{
-  color:#007BFF;
-  font-weight:bold;
-}
+.tnh{ color:black; font-weight:bold; }
+.safe{ color:#007BFF; font-weight:bold; }
 
 /* BIG CIRCULAR SOS BUTTON */
 .sos-btn{
@@ -47,6 +38,19 @@ body{
   margin-right:auto;
 }
 
+/* BACK BUTTON */
+.back-btn{
+  background:none;
+  border:none;
+  color:#007BFF;
+  font-size:24px;
+  cursor:pointer;
+  margin-bottom:15px;
+  display:flex;
+  align-items:center;
+}
+.back-btn span{ margin-left:5px; font-size:18px; }
+
 /* CHOICE BUTTONS */
 #optionsContainer{
   margin-top:30px;
@@ -55,7 +59,6 @@ body{
   align-items:center;
   gap:12px;
 }
-
 .option-btn{
   width:90%;
   padding:15px;
@@ -113,18 +116,8 @@ button{
 
 /* MOBILE RESPONSIVE */
 @media(max-width:480px){
-  .sos-btn{
-    width:140px;
-    height:140px;
-    font-size:36px;
-  }
-  .title{
-    font-size:28px;
-  }
-  input, .option-btn{
-    width:95%;
-  }
-  #summaryBox{
-    font-size:13px;
-  }
+  .sos-btn{ width:140px; height:140px; font-size:36px; }
+  .title{ font-size:28px; }
+  input, .option-btn{ width:95%; }
+  #summaryBox{ font-size:13px; }
 }
