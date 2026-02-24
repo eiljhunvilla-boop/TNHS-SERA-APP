@@ -1,113 +1,173 @@
-body{
-  margin:0;
-  font-family:Arial;
-  background:white;
-  text-align:center;
+/* --- General Page --- */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #f4f8ff);
+  text-align: center;
 }
 
-.page{
-  display:none;
-  padding:20px;
+/* --- Pages --- */
+.page {
+  display: none;
+  padding: 20px;
 }
-.page.active{
-  display:block;
-}
-
-.title{
-  margin-top:40px;
-  font-size:36px;
-}
-.tnh{ color:black; font-weight:bold; }
-.safe{ color:#007BFF; font-weight:bold; }
-
-.sos-btn{
-  margin-top:60px;
-  width:160px;
-  height:160px;
-  font-size:40px;
-  border-radius:50%;
-  background:red;
-  color:white;
-  border:none;
-  cursor:pointer;
-  display:block;
-  margin-left:auto;
-  margin-right:auto;
+.page.active {
+  display: block;
 }
 
-.back-btn{
-  background:none;
-  border:none;
-  color:#007BFF;
-  font-size:24px;
-  cursor:pointer;
-  margin-bottom:15px;
-  display:flex;
-  align-items:center;
-}
-.back-btn span{ margin-left:5px; font-size:18px; }
-
-#optionsContainer{
-  margin-top:30px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-}
-.option-btn{
-  width:90%;
-  padding:15px;
-  font-size:18px;
-  border-radius:10px;
-  border:none;
-  background:#5DADE2;
-  color:white;
-  cursor:pointer;
-  text-align:center;
+/* --- Logo --- */
+.school-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* circular */
+  margin-bottom: 20px;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-input{
-  width:90%;
-  padding:15px;
-  font-size:18px;
-  border-radius:10px;
-  border:1px solid #ccc;
+/* --- Title --- */
+.title {
+  margin-top: 20px;
+  font-size: 36px;
+  font-weight: bold;
+}
+.tnh { color: black; }
+.safe { color: #007BFF; }
+
+.subtitle {
+  font-size: 16px;
+  margin-bottom: 40px;
+  color: #555;
 }
 
-button.confirm-btn{
-  margin-top:15px;
-  padding:12px 25px;
-  font-size:18px;
-  background:#007BFF;
-  color:white;
-  border:none;
-  border-radius:10px;
+/* --- SOS Button --- */
+.sos-btn {
+  margin-top: 20px;
+  width: 160px;
+  height: 160px;
+  font-size: 40px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff4d4d, #ff0000);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 6px 15px rgba(255,0,0,0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  animation: pulse 2s infinite;
 }
 
-#summaryBox{
-  background:#5DADE2;
-  color:white;
-  padding:20px;
-  border-radius:15px;
-  margin:20px auto;
-  max-width:90%;
-  text-align:left;
-  font-size:14px;
+.sos-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255,0,0,0.6);
 }
 
-button{
-  margin-top:20px;
-  padding:15px 30px;
-  font-size:18px;
-  background:#007BFF;
-  color:white;
-  border:none;
-  border-radius:10px;
+/* --- Pulse Animation --- */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(255,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
 }
 
+/* --- Instruction Text --- */
+.instruction {
+  font-size: 14px;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* --- Footer --- */
+.footer {
+  font-size: 12px;
+  color: #888;
+  margin-top: 40px;
+}
+
+/* --- Back Button --- */
+.back-btn {
+  background: none;
+  border: none;
+  color: #007BFF;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+.back-btn span {
+  margin-left: 5px;
+  font-size: 18px;
+}
+
+/* --- Options / Inputs --- */
+#optionsContainer {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.option-btn, input {
+  width: 90%;
+  padding: 15px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  background: #5DADE2;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+input {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+}
+
+/* --- Confirm Button --- */
+button.confirm-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  font-size: 18px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+/* --- Summary Box --- */
+#summaryBox {
+  background: #5DADE2;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 90%;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* --- General Buttons --- */
+button {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 18px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+/* --- Responsive --- */
 @media(max-width:480px){
-  .sos-btn{ width:140px; height:140px; font-size:36px; }
-  .title{ font-size:28px; }
-  input, .option-btn{ width:95%; }
-  #summaryBox{ font-size:13px; }
+  .sos-btn { width: 140px; height: 140px; font-size: 36px; }
+  .title { font-size: 28px; }
+  input, .option-btn { width: 95%; }
+  #summaryBox { font-size: 13px; }
+  .subtitle { font-size: 14px; }
+  .instruction { font-size: 12px; }
+  .footer { font-size: 11px; }
 }
