@@ -3,7 +3,7 @@ let step = 0;
 let answers = {};
 let finalMessage = "";
 
-// Trauma & Medical Questions
+
 const questions = [
   { key: "reporter", question: "Enter Your Name", type: "input" },
   { key: "type", question: "Select Emergency Type", options: ["Trauma", "Medical"] },

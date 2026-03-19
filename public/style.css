@@ -1,4 +1,4 @@
-/* --- General Page --- */
+
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -6,7 +6,7 @@ body {
   text-align: center;
 }
 
-/* --- Pages --- */
+
 .page {
   display: none;
   padding: 20px;
@@ -15,17 +15,17 @@ body {
   display: block;
 }
 
-/* --- Logo --- */
+
 .school-logo {
   width: 120px;
   height: 120px;
-  border-radius: 50%; /* circular */
+  border-radius: 50%; 
   margin-bottom: 20px;
   object-fit: cover;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* --- Title --- */
+
 .title {
   margin-top: 20px;
   font-size: 36px;
