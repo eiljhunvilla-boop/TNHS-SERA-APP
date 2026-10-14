@@ -1,51 +1,839 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TNHSafe</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/jpeg" href="Icon.jpg?v=2">
-<link rel="apple-touch-icon" href="Icon.jpg?v=2">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#1769d2">
+    <meta
+        name="description"
+        content="TNHSafe - Tigbauan National High School Emergency Response System"
+    >
+
+    <title>TNHSafe | Emergency Response System</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/jpeg" href="/Icon.jpg?v=2">
+    <link rel="apple-touch-icon" href="/Icon.jpg?v=2">
 </head>
+
 <body>
+    <main>
 
-<!-- HOME PAGE -->
-<div class="page active" id="homePage">
-  <!-- School Logo -->
-  <img src="logo.jpg" alt="TNHS Logo" class="school-logo">
+        <!-- LOGIN PAGE -->
+        <section class="page active" id="loginPage">
+            <div class="auth-layout">
 
-  <!-- App Title -->
-  <h1 class="title">
-    <span class="tnh">TNH</span><span class="safe">Safe</span>
-  </h1>
-  <p class="subtitle">Tigbauan National High School Emergency Response System</p>
+                <div class="logo-container">
+                    <img
+                        src="/logo.jpg"
+                        alt="Tigbauan National High School Logo"
+                        class="school-logo"
+                    >
+                </div>
 
-  <!-- SOS Button -->
-  <button class="sos-btn" onclick="startApp()">⚠️ SOS</button>
-  <p class="instruction">Tap only in case of emergency</p>
+                <h1 class="title">
+                    <span class="tnh">TNH</span><span class="safe">Safe</span>
+                </h1>
 
-  <!-- Footer -->
-  <p class="footer">Powered by TNHS SERT</p>
-  <p class="footer">for school use only</p>
-</div>
+                <p class="subtitle">
+                    Tigbauan National High School<br>
+                    Emergency Response System
+                </p>
 
-<!-- QUESTION PAGE -->
-<div class="page" id="questionPage">
-  <div id="backContainer"></div>
-  <h2 id="questionTitle"></h2>
-  <div id="optionsContainer"></div>
-</div>
+                <div class="auth-card">
+                    <h2>Welcome Back</h2>
 
-<!-- SUMMARY PAGE -->
-<div class="page" id="summaryPage">
-  <h2>Review Report</h2>
-  <div id="summaryBox">
-    <pre id="summaryText"></pre>
-  </div>
-  <button onclick="confirmSend()">Confirm & Send</button>
-</div>
+                    <p class="auth-description">
+                        Log in to access TNHSafe and report emergencies.
+                    </p>
 
-<script src="script.js"></script>
+                    <form id="loginForm">
+                        <label for="loginUsername">Username</label>
+
+                        <input
+                            id="loginUsername"
+                            name="username"
+                            type="text"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="20"
+                            required
+                        >
+
+                        <label for="loginPassword">Password</label>
+
+                        <div class="password-field">
+                            <input
+                                id="loginPassword"
+                                name="password"
+                                type="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-toggle="loginPassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                                title="Show password"
+                            >
+                                <svg
+                                    class="eye-icon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p
+                            id="loginError"
+                            class="auth-message error-message"
+                            role="alert"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <p
+                            id="loginSuccess"
+                            class="auth-message success-message"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="confirm-btn"
+                            id="loginButton"
+                        >
+                            Log In
+                        </button>
+                    </form>
+
+                    <p class="auth-switch">
+                        Don't have an account?
+
+                        <button type="button" id="showRegisterButton">
+                            Sign Up
+                        </button>
+                    </p>
+
+                    <div class="auth-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="guest-report-btn"
+                        id="guestReportButton"
+                    >
+                        Report Without an Account
+                    </button>
+
+                    <p class="guest-note">
+                        Emergency reporting remains available to guests
+                        without requiring an account.
+                    </p>
+                </div>
+            </div>
+
+            <footer class="home-footer">
+                <p class="footer-brand">Powered by TNHS SERT</p>
+                <p class="footer-note">For school use only</p>
+            </footer>
+        </section>
+
+
+        <!-- REGISTRATION PAGE -->
+        <section class="page" id="registerPage">
+            <div class="auth-layout">
+
+                <div class="logo-container">
+                    <img
+                        src="/logo.jpg"
+                        alt="Tigbauan National High School Logo"
+                        class="school-logo"
+                    >
+                </div>
+
+                <h1 class="title">
+                    <span class="tnh">TNH</span><span class="safe">Safe</span>
+                </h1>
+
+                <p class="subtitle">Create your TNHSafe account</p>
+
+                <div class="auth-card">
+                    <h2>Create Account</h2>
+
+                    <p class="auth-description">
+                        Enter your information to register.
+                    </p>
+
+                    <form id="registerForm">
+
+                        <!-- FULL NAME -->
+                        <label for="registerFullName">Full Name</label>
+
+                        <input
+                            id="registerFullName"
+                            name="fullName"
+                            type="text"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            maxlength="120"
+                            required
+                        >
+
+                        <!-- ROLE -->
+                        <label for="registerRole">Role</label>
+
+                        <select id="registerRole" name="role" required>
+                            <option value="" selected disabled>
+                                Select your role
+                            </option>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Staff">Staff</option>
+                        </select>
+
+                        <!-- STUDENT-ONLY FIELDS -->
+                        <div id="studentFields" hidden>
+                            <div class="student-fields-heading">
+                                <h3>Student Information</h3>
+                                <p>
+                                    Complete these fields to identify
+                                    your current school enrollment.
+                                </p>
+                            </div>
+
+                            <label for="registerLRN">
+                                Learner Reference Number (LRN)
+                            </label>
+
+                            <input
+                                id="registerLRN"
+                                name="lrn"
+                                type="text"
+                                placeholder="Enter your 12-digit LRN"
+                                inputmode="numeric"
+                                autocomplete="off"
+                                maxlength="12"
+                                pattern="[0-9]{12}"
+                                title="Enter exactly 12 digits."
+                            >
+
+                            <label for="registerGrade">Grade Level</label>
+
+                            <select id="registerGrade" name="grade">
+                                <option value="" selected disabled>
+                                    Select your grade
+                                </option>
+                                <option value="Grade 7">Grade 7</option>
+                                <option value="Grade 8">Grade 8</option>
+                                <option value="Grade 9">Grade 9</option>
+                                <option value="Grade 10">Grade 10</option>
+                                <option value="Grade 11">Grade 11</option>
+                                <option value="Grade 12">Grade 12</option>
+                            </select>
+
+                            <label for="registerSection">Section</label>
+
+                            <input
+                                id="registerSection"
+                                name="section"
+                                type="text"
+                                placeholder="Enter your section"
+                                maxlength="40"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <!-- USERNAME -->
+                        <label for="registerUsername">Username</label>
+
+                        <input
+                            id="registerUsername"
+                            name="username"
+                            type="text"
+                            placeholder="Create a username"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="20"
+                            pattern="[A-Za-z0-9][A-Za-z0-9._-]{1,18}[A-Za-z0-9]"
+                            title="Use 3–20 characters. Letters, numbers, periods, underscores, and hyphens are allowed."
+                            required
+                        >
+
+                        <p class="field-hint">
+                            Use 3–20 characters. Usernames must start
+                            and end with a letter or number.
+                        </p>
+
+                        <!-- PASSWORD -->
+                        <label for="registerPassword">Password</label>
+
+                        <div class="password-field">
+                            <input
+                                id="registerPassword"
+                                name="password"
+                                type="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-toggle="registerPassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                                title="Show password"
+                            >
+                                <svg
+                                    class="eye-icon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p class="field-hint">
+                            Your password must contain at least
+                            8 characters.
+                        </p>
+
+                        <!-- CONFIRM PASSWORD -->
+                        <label for="registerConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="password-field">
+                            <input
+                                id="registerConfirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                placeholder="Re-enter your password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-toggle="registerConfirmPassword"
+                                aria-label="Show password"
+                                aria-pressed="false"
+                                title="Show password"
+                            >
+                                <svg
+                                    class="eye-icon"
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                >
+                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- REGISTRATION FEEDBACK -->
+                        <p
+                            id="registerError"
+                            class="auth-message error-message"
+                            role="alert"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <p
+                            id="registerSuccess"
+                            class="auth-message success-message"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="confirm-btn"
+                            id="registerButton"
+                        >
+                            Create Account
+                        </button>
+                    </form>
+
+                    <p class="auth-switch">
+                        Already have an account?
+
+                        <button type="button" id="showLoginButton">
+                            Log In
+                        </button>
+                    </p>
+
+                    <button
+                        type="button"
+                        class="text-back-btn"
+                        id="registerBackButton"
+                    >
+                        ← Back to Welcome
+                    </button>
+                </div>
+            </div>
+
+            <footer class="home-footer">
+                <p class="footer-brand">Powered by TNHS SERT</p>
+                <p class="footer-note">For school use only</p>
+            </footer>
+        </section>
+
+
+        <!-- HOME PAGE -->
+        <section class="page" id="homePage">
+
+            <header class="app-topbar" id="appTopbar" hidden>
+                <button
+                    type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Open navigation menu"
+                    aria-controls="appSidebar"
+                    aria-expanded="false"
+                >
+                    <span aria-hidden="true">☰</span>
+                </button>
+
+                <span class="topbar-brand">
+                    TNH<span>Safe</span>
+                </span>
+
+                <span class="topbar-user" id="topbarUser"></span>
+            </header>
+
+            <div
+                class="sidebar-overlay"
+                id="sidebarOverlay"
+                hidden
+            ></div>
+
+            <aside
+                class="app-sidebar"
+                id="appSidebar"
+                aria-label="Main navigation"
+                aria-hidden="true"
+                inert
+            >
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <span class="tnh">TNH</span><span class="safe">Safe</span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="sidebar-close"
+                        id="sidebarClose"
+                        aria-label="Close navigation menu"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <div class="sidebar-profile">
+                    <div class="sidebar-avatar" aria-hidden="true">
+                        <span id="sidebarAvatarInitial">U</span>
+                    </div>
+
+                    <div class="sidebar-profile-info">
+                        <strong id="sidebarFullName">User</strong>
+                        <span id="sidebarRole">Account</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <button
+                        type="button"
+                        class="sidebar-link"
+                        id="profileMenuButton"
+                    >
+                        <span aria-hidden="true">👤</span>
+                        <span>Profile</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="sidebar-link"
+                        id="settingsMenuButton"
+                    >
+                        <span aria-hidden="true">⚙</span>
+                        <span>Settings</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="sidebar-link"
+                        id="problemMenuButton"
+                    >
+                        <span aria-hidden="true">✉</span>
+                        <span>Report a Problem</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="sidebar-link sidebar-logout"
+                        id="logoutButton"
+                    >
+                        <span aria-hidden="true">↪</span>
+                        <span>Log Out</span>
+                    </button>
+                </nav>
+
+                <div class="sidebar-footer">
+                    TNHSafe · School Emergency Reporting
+                </div>
+            </aside>
+
+            <div class="home-content">
+                <div class="logo-container">
+                    <img
+                        src="/logo.jpg"
+                        alt="Tigbauan National High School Logo"
+                        class="school-logo"
+                    >
+                </div>
+
+                <h1 class="title">
+                    <span class="tnh">TNH</span><span class="safe">Safe</span>
+                </h1>
+
+                <p class="subtitle">
+                    Tigbauan National High School<br>
+                    Emergency Response System
+                </p>
+
+                <div class="home-message">
+                    <div class="home-message-icon" aria-hidden="true">🛡️</div>
+                    <p>
+                        Your safety matters.<br>
+                        Report emergencies and alert school responders.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="sos-btn"
+                    id="startReportButton"
+                    onclick="startApp()"
+                    aria-label="Start emergency report"
+                >
+                    <span class="sos-symbol" aria-hidden="true">⚠</span>
+                    <span class="sos-label">SOS</span>
+                </button>
+
+                <p class="instruction">
+                    Tap only in case of emergency
+                </p>
+            </div>
+
+            <footer class="home-footer">
+                <p class="footer-brand">Powered by TNHS SERT</p>
+                <p class="footer-note">For school use only</p>
+            </footer>
+        </section>
+
+
+        <!-- PROFILE PAGE -->
+        <section class="page" id="profilePage">
+            <div class="utility-layout">
+                <button
+                    type="button"
+                    class="utility-back-btn"
+                    id="profileBackButton"
+                >
+                    ← Back to Home
+                </button>
+
+                <div class="utility-card">
+                    <div class="utility-icon" aria-hidden="true">👤</div>
+                    <p class="step-indicator">ACCOUNT</p>
+                    <h2>My Profile</h2>
+
+                    <p class="utility-description">
+                        Review the information associated with your account.
+                    </p>
+
+                    <div class="profile-details">
+                        <div class="profile-detail">
+                            <span>Full Name</span>
+                            <strong id="profileFullName">Loading...</strong>
+                        </div>
+
+                        <div class="profile-detail">
+                            <span>Username</span>
+                            <strong id="profileUsername">Loading...</strong>
+                        </div>
+
+                        <div class="profile-detail">
+                            <span>Role</span>
+                            <strong id="profileRole">Loading...</strong>
+                        </div>
+
+                        <div
+                            class="profile-detail student-profile-detail"
+                            id="profileLRNRow"
+                            hidden
+                        >
+                            <span>LRN</span>
+                            <strong id="profileLRN"></strong>
+                        </div>
+
+                        <div
+                            class="profile-detail student-profile-detail"
+                            id="profileGradeRow"
+                            hidden
+                        >
+                            <span>Grade Level</span>
+                            <strong id="profileGrade"></strong>
+                        </div>
+
+                        <div
+                            class="profile-detail student-profile-detail"
+                            id="profileSectionRow"
+                            hidden
+                        >
+                            <span>Section</span>
+                            <strong id="profileSection"></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SETTINGS PAGE -->
+        <section class="page" id="settingsPage">
+            <div class="utility-layout">
+                <button
+                    type="button"
+                    class="utility-back-btn"
+                    id="settingsBackButton"
+                >
+                    ← Back to Home
+                </button>
+
+                <div class="utility-card">
+                    <div class="utility-icon" aria-hidden="true">⚙</div>
+                    <p class="step-indicator">PREFERENCES</p>
+                    <h2>Settings</h2>
+
+                    <p class="utility-description">
+                        Manage your TNHSafe session.
+                    </p>
+
+                    <div class="settings-item">
+                        <div>
+                            <strong>Account Session</strong>
+                            <p>
+                                Log out when you are finished using a shared device.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="secondary-action-btn"
+                            id="settingsLogoutButton"
+                        >
+                            Log Out
+                        </button>
+                    </div>
+
+                    <p class="settings-note">
+                        Account and student information can only be changed
+                        through authorized account-management functions.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- REPORT A PROBLEM PAGE -->
+        <section class="page" id="problemPage">
+            <div class="utility-layout">
+                <button
+                    type="button"
+                    class="utility-back-btn"
+                    id="problemBackButton"
+                >
+                    ← Back to Home
+                </button>
+
+                <div class="utility-card">
+                    <div class="utility-icon" aria-hidden="true">✉</div>
+                    <p class="step-indicator">FEEDBACK</p>
+                    <h2>Report a Problem</h2>
+
+                    <p class="utility-description">
+                        Report a technical issue or share feedback about TNHSafe.
+                        This form is separate from emergency reporting.
+                    </p>
+
+                    <form id="problemForm">
+                        <label for="problemCategory">Problem Category</label>
+
+                        <select
+                            id="problemCategory"
+                            name="category"
+                            required
+                        >
+                            <option value="" selected disabled>
+                                Select a category
+                            </option>
+                            <option value="Technical Issue">Technical Issue</option>
+                            <option value="Account Problem">Account Problem</option>
+                            <option value="Incorrect Information">Incorrect Information</option>
+                            <option value="Suggestion">Suggestion</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <label for="problemDescription">Description</label>
+
+                        <textarea
+                            id="problemDescription"
+                            name="description"
+                            rows="5"
+                            minlength="10"
+                            maxlength="2000"
+                            placeholder="Describe the problem or suggestion..."
+                            required
+                        ></textarea>
+
+                        <p
+                            id="problemError"
+                            class="auth-message error-message"
+                            role="alert"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <p
+                            id="problemSuccess"
+                            class="auth-message success-message"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="confirm-btn"
+                            id="problemSubmitButton"
+                        >
+                            Submit Feedback
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- EMERGENCY QUESTION PAGE -->
+        <section class="page" id="questionPage">
+            <div class="question-layout">
+                <header class="question-header">
+                    <div class="question-heading">
+                        <div
+                            class="question-icon"
+                            id="questionIcon"
+                            aria-hidden="true"
+                        >
+                            👤
+                        </div>
+
+                        <div class="question-heading-text">
+                            <p class="step-indicator" id="stepIndicator">
+                                STEP 1
+                            </p>
+
+                            <h2 id="questionTitle">Enter Your Name</h2>
+
+                            <p id="questionSubtitle">
+                                Please provide your name to continue with
+                                the emergency report.
+                            </p>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="optionsContainer"></div>
+                <div id="backContainer"></div>
+
+                <p class="question-footer">
+                    TNHSafe · School Emergency Reporting
+                </p>
+            </div>
+        </section>
+
+
+        <!-- EMERGENCY REPORT SUMMARY -->
+        <section class="page" id="summaryPage">
+            <div class="summary-layout">
+                <div class="summary-icon" aria-hidden="true">📋</div>
+                <p class="step-indicator">FINAL STEP</p>
+                <h2>Review Report</h2>
+
+                <p class="summary-description">
+                    Please review the emergency information before sending
+                    it to the school responders.
+                </p>
+
+                <div id="summaryBox">
+                    <pre id="summaryText"></pre>
+                </div>
+
+                <div class="summary-actions">
+                    <button
+                        type="button"
+                        class="confirm-btn summary-send-btn"
+                        id="sendButton"
+                        onclick="confirmSend()"
+                    >
+                        Confirm &amp; Send →
+                    </button>
+
+                    <button
+                        type="button"
+                        class="summary-back-btn"
+                        onclick="editReport()"
+                    >
+                        ← Review Answers
+                    </button>
+                </div>
+
+                <p class="summary-disclaimer">
+                    Please verify that the information is accurate before submission.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module" src="/script.js"></script>
 </body>
 </html>
